@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TicTacToeGUI {
 
@@ -9,6 +11,9 @@ public class TicTacToeGUI {
     private JButton[][] buttons;
     private char currentPlayer;
     private boolean gameEnded;
+    private Map<Character, Integer> scores;
+    private JLabel xScoreLabel;
+    private JLabel oScoreLabel;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -24,6 +29,9 @@ public class TicTacToeGUI {
     public TicTacToeGUI() {
         currentPlayer = 'X';
         gameEnded = false;
+        scores = new HashMap<>();
+        scores.put('X', 0);
+        scores.put('O', 0);
         initialize();
     }
 
@@ -34,6 +42,7 @@ public class TicTacToeGUI {
         // Create a custom title panel
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(new Color(21, 230, 255));
+        titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.WHITE)); // White bottom border
         JLabel titleLabel = new JLabel("TicTacToe Game");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -58,16 +67,49 @@ public class TicTacToeGUI {
             }
         }
 
+        // Leaderboard panel
+        JPanel leaderboardPanel = new JPanel();
+        leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
+        leaderboardPanel.setBackground(new Color(102, 178, 255)); // New light blue color
+        leaderboardPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(0, 2, 0, 0, Color.WHITE), // Left white border
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        
+        JLabel leaderboardTitle = new JLabel("Leaderboard");
+        leaderboardTitle.setFont(new Font("Arial", Font.BOLD, 18));
+        leaderboardTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        xScoreLabel = new JLabel("Player X: 0 wins");
+        xScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        xScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        oScoreLabel = new JLabel("Player O: 0 wins");
+        oScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        oScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        leaderboardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        leaderboardPanel.add(leaderboardTitle);
+        leaderboardPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        leaderboardPanel.add(xScoreLabel);
+        leaderboardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        leaderboardPanel.add(oScoreLabel);
+
+        // Main content panel that holds game and leaderboard
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.add(gamePanel, BorderLayout.CENTER);
+        contentPanel.add(leaderboardPanel, BorderLayout.EAST);
+
         // Set up the main frame layout
         frame.setLayout(new BorderLayout());
         frame.add(titlePanel, BorderLayout.NORTH);
-        frame.add(gamePanel, BorderLayout.CENTER);
+        frame.add(contentPanel, BorderLayout.CENTER);
         
-        frame.setSize(400, 450); // Slightly taller to accommodate title
+        frame.setSize(600, 450); // Wider to accommodate leaderboard
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    // [Rest of the code remains the same...]
+    // [Rest of the methods remain unchanged...]
     private class ButtonClickListener implements ActionListener {
         private int row;
         private int col;
@@ -84,6 +126,8 @@ public class TicTacToeGUI {
                 buttons[row][col].setEnabled(false);
                 if (checkWinner(row, col)) {
                     gameEnded = true;
+                    scores.put(currentPlayer, scores.get(currentPlayer) + 1);
+                    updateLeaderboard();
                     JOptionPane.showMessageDialog(frame, "Player " + currentPlayer + " wins!");
                     askPlayAgain();
                 } else if (isBoardFull()) {
@@ -95,6 +139,11 @@ public class TicTacToeGUI {
                 }
             }
         }
+    }
+
+    private void updateLeaderboard() {
+        xScoreLabel.setText("Player X: " + scores.get('X') + " wins");
+        oScoreLabel.setText("Player O: " + scores.get('O') + " wins");
     }
 
     private boolean checkWinner(int row, int col) {
@@ -153,7 +202,7 @@ public class TicTacToeGUI {
             for (int j = 0; j < 3; j++) {
                 buttons[i][j].setText("");
                 buttons[i][j].setEnabled(true);
-                buttons[i][j].setBackground(new Color(0, 51, 102));
+                buttons[i][j].setBackground(new Color(68, 50, 102));
             }
         }
         currentPlayer = 'X';
