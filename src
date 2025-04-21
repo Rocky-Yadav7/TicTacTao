@@ -1,4 +1,3 @@
-Code:
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,10 +29,20 @@ public class TicTacToeGUI {
 
     private void initialize() {
         frame = new JFrame();
-        frame.setTitle("Tic Tac Toe");
-        frame.setBounds(100, 100, 400, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(new GridLayout(3, 3, 0, 0));
+        frame.setTitle(" "); // Empty title since we'll use our own
+        
+        // Create a custom title panel
+        JPanel titlePanel = new JPanel();
+        titlePanel.setBackground(new Color(21, 230, 255));
+        JLabel titleLabel = new JLabel("TicTacToe Game");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titlePanel.add(titleLabel);
+        
+        // Main game panel
+        JPanel gamePanel = new JPanel();
+        gamePanel.setLayout(new GridLayout(3, 3, 0, 0));
+        gamePanel.setBackground(new Color(0, 51, 102));
 
         buttons = new JButton[3][3];
         for (int i = 0; i < 3; i++) {
@@ -41,12 +50,24 @@ public class TicTacToeGUI {
                 buttons[i][j] = new JButton("");
                 buttons[i][j].setFont(new Font("Arial", Font.PLAIN, 60));
                 buttons[i][j].setFocusPainted(false);
+                buttons[i][j].setBackground(new Color(68, 50, 102));
+                buttons[i][j].setOpaque(true);
+                buttons[i][j].setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
                 buttons[i][j].addActionListener(new ButtonClickListener(i, j));
-                frame.getContentPane().add(buttons[i][j]);
+                gamePanel.add(buttons[i][j]);
             }
         }
+
+        // Set up the main frame layout
+        frame.setLayout(new BorderLayout());
+        frame.add(titlePanel, BorderLayout.NORTH);
+        frame.add(gamePanel, BorderLayout.CENTER);
+        
+        frame.setSize(400, 450); // Slightly taller to accommodate title
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    // [Rest of the code remains the same...]
     private class ButtonClickListener implements ActionListener {
         private int row;
         private int col;
@@ -79,27 +100,27 @@ public class TicTacToeGUI {
     private boolean checkWinner(int row, int col) {
         // Check row
         if (buttons[row][0].getText().equals(String.valueOf(currentPlayer)) &&
-                buttons[row][1].getText().equals(String.valueOf(currentPlayer)) &&
-                buttons[row][2].getText().equals(String.valueOf(currentPlayer))) {
+            buttons[row][1].getText().equals(String.valueOf(currentPlayer)) &&
+            buttons[row][2].getText().equals(String.valueOf(currentPlayer))) {
             return true;
         }
 
         // Check column
         if (buttons[0][col].getText().equals(String.valueOf(currentPlayer)) &&
-                buttons[1][col].getText().equals(String.valueOf(currentPlayer)) &&
-                buttons[2][col].getText().equals(String.valueOf(currentPlayer))) {
+            buttons[1][col].getText().equals(String.valueOf(currentPlayer)) &&
+            buttons[2][col].getText().equals(String.valueOf(currentPlayer))) {
             return true;
         }
 
         // Check diagonals
         if (buttons[0][0].getText().equals(String.valueOf(currentPlayer)) &&
-                buttons[1][1].getText().equals(String.valueOf(currentPlayer)) &&
-                buttons[2][2].getText().equals(String.valueOf(currentPlayer))) {
+            buttons[1][1].getText().equals(String.valueOf(currentPlayer)) &&
+            buttons[2][2].getText().equals(String.valueOf(currentPlayer))) {
             return true;
         }
         if (buttons[0][2].getText().equals(String.valueOf(currentPlayer)) &&
-                buttons[1][1].getText().equals(String.valueOf(currentPlayer)) &&
-                buttons[2][0].getText().equals(String.valueOf(currentPlayer))) {
+            buttons[1][1].getText().equals(String.valueOf(currentPlayer)) &&
+            buttons[2][0].getText().equals(String.valueOf(currentPlayer))) {
             return true;
         }
 
@@ -132,6 +153,7 @@ public class TicTacToeGUI {
             for (int j = 0; j < 3; j++) {
                 buttons[i][j].setText("");
                 buttons[i][j].setEnabled(true);
+                buttons[i][j].setBackground(new Color(0, 51, 102));
             }
         }
         currentPlayer = 'X';
