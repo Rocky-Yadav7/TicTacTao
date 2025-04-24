@@ -9,7 +9,7 @@ public class TicTacToeGUI {
 
     private JFrame frame;
     private JButton[][] buttons;
-    private char currentPlayer;
+    private char cPlayer;
     private boolean gameEnded;
     private Map<Character, Integer> scores;
     private JLabel xScoreLabel;
@@ -27,7 +27,7 @@ public class TicTacToeGUI {
     }
 
     public TicTacToeGUI() {
-        currentPlayer = 'X';
+        cPlayer = 'X';
         gameEnded = false;
         scores = new HashMap<>();
         scores.put('X', 0);
@@ -122,20 +122,20 @@ public class TicTacToeGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!gameEnded && buttons[row][col].getText().equals("")) {
-                buttons[row][col].setText(String.valueOf(currentPlayer));
+                buttons[row][col].setText(String.valueOf(cPlayer));
                 buttons[row][col].setEnabled(false);
                 if (checkWinner(row, col)) {
                     gameEnded = true;
-                    scores.put(currentPlayer, scores.get(currentPlayer) + 1);
+                    scores.put(cPlayer, scores.get(cPlayer) + 1);
                     updateLeaderboard();
-                    JOptionPane.showMessageDialog(frame, "Player " + currentPlayer + " wins!");
+                    JOptionPane.showMessageDialog(frame, "Player " + cPlayer + " wins!");
                     askPlayAgain();
                 } else if (isBoardFull()) {
                     gameEnded = true;
                     JOptionPane.showMessageDialog(frame, "It's a draw!");
                     askPlayAgain();
                 } else {
-                    currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                    cPlayer = (cPlayer == 'X') ? 'O' : 'X';
                 }
             }
         }
@@ -148,28 +148,28 @@ public class TicTacToeGUI {
 
     private boolean checkWinner(int row, int col) {
         // Check row
-        if (buttons[row][0].getText().equals(String.valueOf(currentPlayer)) &&
-            buttons[row][1].getText().equals(String.valueOf(currentPlayer)) &&
-            buttons[row][2].getText().equals(String.valueOf(currentPlayer))) {
+        if (buttons[row][0].getText().equals(String.valueOf(cPlayer)) &&
+            buttons[row][1].getText().equals(String.valueOf(cPlayer)) &&
+            buttons[row][2].getText().equals(String.valueOf(cPlayer))) {
             return true;
         }
 
         // Check column
-        if (buttons[0][col].getText().equals(String.valueOf(currentPlayer)) &&
-            buttons[1][col].getText().equals(String.valueOf(currentPlayer)) &&
-            buttons[2][col].getText().equals(String.valueOf(currentPlayer))) {
+        if (buttons[0][col].getText().equals(String.valueOf(cPlayer)) &&
+            buttons[1][col].getText().equals(String.valueOf(cPlayer)) &&
+            buttons[2][col].getText().equals(String.valueOf(cPlayer))) {
             return true;
         }
 
         // Check diagonals
-        if (buttons[0][0].getText().equals(String.valueOf(currentPlayer)) &&
-            buttons[1][1].getText().equals(String.valueOf(currentPlayer)) &&
-            buttons[2][2].getText().equals(String.valueOf(currentPlayer))) {
+        if (buttons[0][0].getText().equals(String.valueOf(cPlayer)) &&
+            buttons[1][1].getText().equals(String.valueOf(cPlayer)) &&
+            buttons[2][2].getText().equals(String.valueOf(cPlayer))) {
             return true;
         }
-        if (buttons[0][2].getText().equals(String.valueOf(currentPlayer)) &&
-            buttons[1][1].getText().equals(String.valueOf(currentPlayer)) &&
-            buttons[2][0].getText().equals(String.valueOf(currentPlayer))) {
+        if (buttons[0][2].getText().equals(String.valueOf(cPlayer)) &&
+            buttons[1][1].getText().equals(String.valueOf(cPlayer)) &&
+            buttons[2][0].getText().equals(String.valueOf(cPlayer))) {
             return true;
         }
 
@@ -205,7 +205,7 @@ public class TicTacToeGUI {
                 buttons[i][j].setBackground(new Color(68, 50, 102));
             }
         }
-        currentPlayer = 'X';
+        cPlayer = 'X';
         gameEnded = false;
     }
 }
