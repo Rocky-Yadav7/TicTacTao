@@ -21,3 +21,25 @@ You play as **'X'**, and the computer plays as **'O'** with basic AI logic.
   - Center first if available
   - Then a corner
   - Then an edge
+
+## Project Structure
+
+- **TicTacToeGUI.java**  
+  Main class containing:
+  - UI setup (`JFrame`, `JButton`, `JLabel`, etc.)
+  - Button click listeners
+  - Game logic (checking wins, computer moves)
+  - Scoreboard updates
+
+## Technologies Used
+
+- Java
+- Java Swing (GUI Toolkit)
+- Event-driven programming
+
+## Future Improvements
+
+- Add difficulty levels (Easy, Medium, Hard).
+- Highlight the winning combination on the board.
+- Add sound effects.
+- Improve AI to use minimax algorithm for unbeatable gameplay.
